@@ -17,10 +17,7 @@ public class DemoContentProvider implements LizerFragment.Input {
     }
 
     public Drawable getNextImage(int width, int height) {
-        if (++index == imageIds.length) { // rotate images
-            index = 0;
-        }
-        Bitmap bitmap = ImageLoader.getImageFromApp(imageIds[index], width, height, resources);
+        Bitmap bitmap = ImageLoader.getImageFromApp(imageIds[index++ % imageIds.length], width, height, resources);
         return new BitmapDrawable(bitmap);
     }
 }
