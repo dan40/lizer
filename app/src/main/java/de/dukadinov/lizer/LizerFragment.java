@@ -150,17 +150,19 @@ public interface Input extends Serializable {
     private void dragEnd() {
         imageView2.setScaleX(1);
         imageView2.setScaleY(1);
-        if (x2 < LizerSettings.DRAG_FOR_NEXT * imageView1.getWidth()) {
-            animateBack();
+        if (-x2 > LizerSettings.DRAG_FOR_NEXT * imageView1.getWidth()) {
+            animateNext(true);
+        } else if (x2 > LizerSettings.DRAG_FOR_NEXT * imageView1.getWidth()) {
+            animateNext(false);
         } else {
-            animateNext();
+            animateBack();
         }
     }
 
-    private void animateNext() {
+    private void animateNext(boolean left) {
         AnimationSet set1 = new AnimationSet(true);
         set1.addAnimation(new AlphaAnimation(1, 0));
-        set1.addAnimation(new TranslateAnimation(x2, imageView1.getWidth(), 0,
+        set1.addAnimation(new TranslateAnimation(x2, (left ? -1 : 1) * imageView1.getWidth(), 0,
                 0));
         set1.setAnimationListener(new AnimationListener() {
             @Override
@@ -262,7 +264,7 @@ public interface Input extends Serializable {
     private void click(int x, int y) {
         x2 = 0;
         imageView2.setVisibility(View.VISIBLE);
-        animateNext();
+        animateNext(true);
         // TODO Auto-generated method stub
 
     }
