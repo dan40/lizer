@@ -22,21 +22,23 @@ public class AboutActivity extends Activity {
         setContentView(R.layout.about_layout);
         toAnimate = findViewById(R.id.about_j);
 
-        scheduleAnimation();
+        scheduleAnimation(true);
     }
 
-    private void scheduleAnimation() {
+    private void scheduleAnimation(boolean delay) {
         waiting = ObjectAnimator.ofFloat(toAnimate, "rotation", 0, 3 * 360);
         waiting.setRepeatCount(1);
         waiting.setInterpolator(new AccelerateDecelerateInterpolator());
         waiting.setDuration(1000);
-        waiting.setStartDelay(2500);
+        if (delay) {
+            waiting.setStartDelay(2500);
+        }
 
         waiting.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (waiting != null) {
-                    scheduleAnimation();
+                    scheduleAnimation(true);
                 }
             }
         });
@@ -70,7 +72,7 @@ public class AboutActivity extends Activity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (--activeFallingAnims == 0) {
-                    scheduleAnimation();
+                    scheduleAnimation(false);
                 }
             }
         });
